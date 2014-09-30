@@ -1,25 +1,51 @@
 #!/bin/bash
 
-
-
 #######################################################
 # build an image from a Dockerfile
+#
+# this example builds a centos image that has the Flask python microframework installed.
+#
 #######################################################
 function build_from_dockerfile
 {
-    docker build -t gregfelice/centos-flask .
+    sudo docker build -t gregfelice/centos-flask .
 }
 
-CONTAINER="$(sudo docker run -d -p 5000:5000 training/webapp python app.py)"
+#######################################################
+# run a docker container
+#######################################################
+function run_container
+{
+    CONTAINER="$(sudo docker run -d -p 5000:5000 gregfelice/centos-flask python app.py)"
+    echo "created container: $CONTAINER"
+}
 
-echo "created container: $CONTAINER"
+function run_container_shell
+{
+    sudo docker run -t -i gregfelice/centos-flask /bin/bash
+}
 
-sleep 1
+#######################################################
+# stop a docker container
+#######################################################
+function stop_container
+{
+    sudo docker stop $CONTAINER
+    echo "container $CONTAINER stopped."
+}
 
-echo "killing container $CONTAINER"
+#######################################################
+# see if you can hit the port via HTTP.
+#######################################################
+function test_container
+{
+    curl -i localhost:5000
+}
 
-sudo docker stop $CONTAINER
+#run_container_shell
+#build_from_dockerfile
 
-echo "container stopped."
-
-
+run_container
+#sleep 1
+#test_container
+#stop_container
