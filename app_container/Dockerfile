@@ -8,6 +8,10 @@ RUN rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.
 # Install flask
 RUN yum install -y python-flask
 
+# Install postgres client
+RUN yum install -y postgresql
+
 ADD ./webapp /opt/webapp/
 WORKDIR /opt/webapp
+
 
