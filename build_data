@@ -1,0 +1,15 @@
+#!/bin/bash
+
+sudo docker build -t gregfelice/centos-data ./data_container
+
+
+
+
+
+
+
+
+
+
+
+

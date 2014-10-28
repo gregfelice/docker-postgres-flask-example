@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# sudo docker run -v="/opt/postgresdata":"/var/lib/pgsql/data"  -i -t -p 5432 gregfelice/centos-postgres /bin/bash
+
+sudo docker run -v="/opt/postgresdata":"/var/lib/pgsql/data"  -i -t -p 5432 --name db gregfelice/centos-postgres:docker-database /bin/bash
+
+# sudo docker run -v="/opt/postgresdata":"/var/lib/pgsql/data"  -i -t -p 5432 gregfelice/centos-postgres:docker-database /bin/bash
+
+# to stop pg / from inside container
+# sudo postgres - 
+# pg_ctl --pgdata=/var/lib/pgsql/data stop
+
