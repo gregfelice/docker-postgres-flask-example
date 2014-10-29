@@ -11,6 +11,9 @@ RUN yum install -y python-flask
 # Install postgres client
 RUN yum install -y postgresql
 
+# Install python pg libraries
+RUN yum install -y python-psycopg2
+
 EXPOSE 5000
 
 ADD ./webapp /opt/webapp/
