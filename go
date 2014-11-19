@@ -25,8 +25,8 @@ sudo docker build -t gregfelice/centos-flask ./app_container                    
 
 echo -e "${red}run the app${NC}"
 sudo docker run -d -p 8888:5000 --name web --link db:db gregfelice/centos-flask python app.py      # run as daemon
-sudo docker run -d -p 8889:5000 --name web2 --link db:db gregfelice/centos-flask python app.py      # run as daemon
-sudo docker run -d -p 8890:5000 --name web3 --link db:db gregfelice/centos-flask python app.py      # run as daemon
+#sudo docker run -d -p 8889:5000 --name web2 --link db:db gregfelice/centos-flask python app.py      # run as daemon
+#sudo docker run -d -p 8890:5000 --name web3 --link db:db gregfelice/centos-flask python app.py      # run as daemon
 
 # sudo docker run -i -t -p 8888:5000 --name web --link db:db gregfelice/centos-flask /bin/bash     # command line
 
