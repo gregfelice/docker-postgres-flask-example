@@ -9,13 +9,16 @@ app = Flask(__name__)
 def hello():
     provider = str(os.environ.get('PROVIDER', 'world'))
     conn = psycopg2.connect("dbname=docker user=postgres host=db port=5432")
-    # conn = psycopg2.connect("dbname=docker user=postgres host=172.16.107.93 port=49153")
     cur = conn.cursor()
-    cur.execute("SELECT * FROM person;")
-    s = cur.fetchone()
+    cur.execute("select * from information_schema.tables;");
+    rows = cur.fetchall()
+    s = "<ul>"
+    for row in rows:
+        s = s + "<li>" + row[1] + " " + row[2] + " " + row[3] + "</li>"
+    s = s + "</ul>"
     cur.close()
     conn.close()
-    return 'from the database comes the name: ' + s[1] + ' ' + s[0]
+    return s
 
 @app.route('/health')
 def health():

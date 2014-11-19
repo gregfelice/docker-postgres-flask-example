@@ -1,12 +1,13 @@
 
-FROM centos:centos7
+FROM centos:centos6
 MAINTAINER Greg Felice <gregfelice@gmail.com>
 
 # Enable EPEL
 RUN rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 
-# Install flask
+# Install flask microframework, jinja templating
 RUN yum install -y python-flask
+RUN yum install -y python-jinja2
 
 # Install postgres client
 RUN yum install -y postgresql
