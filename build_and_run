@@ -38,7 +38,7 @@ function run_web_container_daemon
     echo -e "${red}inspect the web container and it's links${NC}"
     sudo docker inspect -f "{{ .HostConfig.Links }}" web
     
-    echo -e "${red}go to http://`hostname -f`:8888 to test.${NC}"
+    echo -e "${red}go to http://`hostname`:8888 to test.${NC}"
 }
 
 function run_db_container_daemon
