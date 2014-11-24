@@ -3,35 +3,65 @@
 red='\e[0;33m'
 NC='\e[0m' # No Color
 
-sudo docker stop db
-sudo docker rm -f db
+function stop_and_remove_all
+{
+    sudo docker stop db
+    sudo docker rm -f db
+    sudo docker stop web
+    sudo docker rm -f web
+}
 
-echo -e "${red}build the database${NC}"
-sudo docker build -t gregfelice/centos-postgres ./db_container                 # build db container
+function build_db_container
+{
+    echo -e "${red}build the database${NC}"
+    sudo docker build -t gregfelice/centos-postgres ./db_container
+}
 
-echo -e "${red}run the database${NC}"
-sudo docker run -d -p 7777:5432 --name db gregfelice/centos-postgres           # run as daemon
+function build_web_container
+{
+    echo -e "${red}build the app${NC}"
+    sudo docker build -t gregfelice/centos-flask ./app_container
+}
 
-# sudo docker run --rm -P --name db gregfelice/centos-postgres                 # foreground
-# sudo docker run -i -t --name db gregfelice/centos-postgres /bin/bash         # cli
-# psql -h localhost -p 7777 -d docker -U docker --password                     # to access db from host
 
-sudo docker stop web
-sudo docker rm -f web
+function run_web_container_bash
+{
+    echo -e "${red}run the web as command line${NC}"
+    sudo docker run -i -t -p 8888:5000 --name web --link db:db gregfelice/centos-flask /bin/bash
+}
 
-echo -e "${red}build the app${NC}"
-sudo docker build -t gregfelice/centos-flask ./app_container                                       # build app container
+function run_web_container_daemon
+{
+    echo -e "${red}run the web as daemon${NC}"
+    sudo docker run -d -p 8888:5000 --name web --link db:db gregfelice/centos-flask python app.py
 
-echo -e "${red}run the app${NC}"
-sudo docker run -d -p 8888:5000 --name web --link db:db gregfelice/centos-flask python app.py      # run as daemon
-#sudo docker run -d -p 8889:5000 --name web2 --link db:db gregfelice/centos-flask python app.py      # run as daemon
-#sudo docker run -d -p 8890:5000 --name web3 --link db:db gregfelice/centos-flask python app.py      # run as daemon
+    echo -e "${red}inspect the web container and it's links${NC}"
+    sudo docker inspect -f "{{ .HostConfig.Links }}" web
+    
+    echo -e "${red}go to http://`hostname -f`:8888 to test.${NC}"
+}
 
-# sudo docker run -i -t -p 8888:5000 --name web --link db:db gregfelice/centos-flask /bin/bash     # command line
+function run_db_container_daemon
+{
+    echo -e "${red}run the database${NC}"
+    sudo docker run -d -p 7777:5432 --name db gregfelice/centos-postgres
+}
 
-echo -e "${red}connect via http to the app${NC}"
-sleep 5
-echo `curl localhost:8888` # test
+######################################################################################################
+
+
+stop_and_remove_all
+
+build_db_container
+run_db_container_daemon
+
+build_web_container
+# run_web_container_bash
+run_web_container_daemon
+
+
+
+
 
 
 

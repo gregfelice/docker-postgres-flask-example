@@ -1,0 +1,6 @@
+
+# sudo docker run --rm -P --name db gregfelice/centos-postgres                 # foreground
+# sudo docker run -i -t --name db gregfelice/centos-postgres /bin/bash         # cli
+# psql -h localhost -p 7777 -d docker -U docker --password                     # to access db from host
+
+
